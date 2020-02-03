@@ -22,22 +22,13 @@ public:
         std::cout << "Enum constructor" << std::endl;
     }
 
-    const char *as_string() {
-        switch (type()) {
-            case WARNING   :
-                return "WARNING";
-            case ADVISORY:
-                return "ADVISORY";
-            case CAUTION :
-                return "CAUTION";
-            case DEFAULT :
-                return "DEFAULT";
-            default    :
-                return "UNKNOWN";
-        }
+    const char *as_string() const {
+
+        const char *strings[] = {"WARNING", "CAUTION", "ADVISORY", "DEFAULT"};
+        return strings[type()];
     }
 
-    alarm_type type() {
+    alarm_type type() const {
         return type_;
     }
 
@@ -46,22 +37,6 @@ private:
 };
 
 std::ostream &operator<<(std::ostream &os, Alarm alarm) {
-    os << "Alarm: ";
-    switch (alarm.type()) {
-        case WARNING   :
-            os << "WARNING";
-            break;
-        case ADVISORY:
-            os << "ADVISORY";
-            break;
-        case CAUTION :
-            os << "CAUTION";
-            break;
-        case DEFAULT :
-            os << "DEFAULT";
-            break;
-        default    :
-            os.setstate(std::ios_base::failbit);
-    }
+    os << "Alarm: " << alarm.as_string();
     return os;
 }
