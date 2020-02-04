@@ -2,7 +2,7 @@
 // Created by andreas on 04/02/2020.
 //
 
-#include "../include/Pipe.h"
+#include "Pipe.h"
 
 void Pipe::push(Alarm &alarm_) {
     std::cout << "Pushing " << alarm_ << std::endl;

@@ -1,8 +1,10 @@
-#include <iostream>
-#include "Alarm.cpp"
-#include "Display.cpp"
-#include "Pipe.cpp"
-#include "Generator.cpp"
+//#include <iostream>
+//#include "Alarm.cpp"
+//#include "Display.cpp"
+//#include "Pipe.cpp"
+//#include "Generator.cpp"
+
+#include "Display.h"
 
 int        init_glob{2};
 int        uninit_glob;

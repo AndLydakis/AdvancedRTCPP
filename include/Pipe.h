@@ -6,7 +6,6 @@
 #define ADVANCEDRTCPP_PIPE_H
 
 #include "Alarm.h"
-#include "Generator.h"
 #include <optional>
 
 class Pipe {

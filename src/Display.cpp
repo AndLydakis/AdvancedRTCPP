@@ -2,7 +2,7 @@
 // Created by andreas on 04/02/2020.
 //
 
-#include "../include/Display.h"
+#include "Display.h"
 
 void Display::connect(Pipe &pipe_) {
     pipe = &pipe_;

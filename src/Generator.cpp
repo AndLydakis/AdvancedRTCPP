@@ -2,9 +2,7 @@
 // Created by andreas on 04/02/2020.
 //
 
-#include <Display.h>
-
-#include "../include/Pipe.h"
+#include "Display.h"
 
 void Generator::connect(Pipe &pipe_) {
     pipe = &pipe_;

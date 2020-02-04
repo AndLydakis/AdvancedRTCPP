@@ -31,9 +31,6 @@ private:
     AlarmType m_type;
 };
 
-std::ostream &operator<<(std::ostream &os, Alarm alarm) {
-    os << "Alarm: " << alarm.as_string();
-    return os;
-}
+std::ostream &operator<<(std::ostream &os, Alarm alarm);
 
 #endif //ADVANCEDRTCPP_ALARM_H

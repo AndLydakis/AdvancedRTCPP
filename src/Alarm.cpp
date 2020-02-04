@@ -2,7 +2,7 @@
 // Created by andreas on 03/02/2020.
 //
 
-#include "../include/Alarm.h"
+#include "Alarm.h"
 
 
 Alarm::Alarm() {
@@ -24,3 +24,7 @@ Alarm::AlarmType Alarm::type() const {
     return m_type;
 }
 
+std::ostream &operator<<(std::ostream &os, Alarm alarm) {
+    os << "Alarm: " << alarm.as_string();
+    return os;
+}
