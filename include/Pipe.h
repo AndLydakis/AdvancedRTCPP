@@ -29,7 +29,7 @@ public:
 
 private:
     std::optional<Alarm> alarm;
-    bool  has_alarm{false};
+    bool                 has_alarm{false};
 };
 
 

@@ -23,15 +23,18 @@ int main() {
         Generator g1{};
         std::cout << "Pipe has data: " << p1.is_empty() << std::endl;
         std::cout << "Connecting Pipe to Generator" << std::endl;
-        g1.connect(p1);
+//        g1.connect(p1);
+        connect(g1, p1);
         std::cout << "Connecting Display to Generator" << std::endl;
-        d1.connect(p1);
+        connect(d1, p1);
+//        d1.connect(p1);
 //        Alarm::AlarmType caution{Alarm::AlarmType::CAUTION};
         g1.execute();
         std::cout << "Pipe has data: " << p1.is_empty() << std::endl;
         d1.execute();
         std::cout << "------------------------------------" << std::endl;
     }
+    return EXIT_SUCCESS;
 }
 
 void ex3() {

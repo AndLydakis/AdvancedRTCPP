@@ -11,3 +11,7 @@ void Display::connect(Pipe &pipe_) {
 void Display::execute() {
     std::cout << "Displaying: " << pipe->pull().value() << std::endl;
 }
+
+void connect(Display &display_, Pipe &pipe_) {
+    display_.pipe = &pipe_;
+}
