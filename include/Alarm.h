@@ -5,6 +5,8 @@
 #ifndef ADVANCEDRTCPP_ALARM_H
 #define ADVANCEDRTCPP_ALARM_H
 
+#include <iostream>
+
 class Alarm {
 
 public:
@@ -13,7 +15,8 @@ public:
         WARNING,
         CAUTION,
         ADVISORY,
-        DEFAULT
+        DEFAULT,
+        last
     };
 
     Alarm();
@@ -23,9 +26,14 @@ public:
     AlarmType type() const;
 
     const char *as_string() const;
-    
+
 private:
     AlarmType m_type;
 };
+
+std::ostream &operator<<(std::ostream &os, Alarm alarm) {
+    os << "Alarm: " << alarm.as_string();
+    return os;
+}
 
 #endif //ADVANCEDRTCPP_ALARM_H

@@ -5,7 +5,6 @@
 #include "../include/Alarm.h"
 
 
-
 Alarm::Alarm() {
     std::cout << "Default Constructor" << std::endl;
     m_type = ADVISORY;
@@ -25,7 +24,3 @@ Alarm::AlarmType Alarm::type() const {
     return m_type;
 }
 
-std::ostream &operator<<(std::ostream &os, Alarm alarm) {
-    os << "Alarm: " << alarm.as_string();
-    return os;
-}

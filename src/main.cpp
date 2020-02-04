@@ -1,5 +1,8 @@
 #include <iostream>
 #include "Alarm.cpp"
+#include "Display.cpp"
+#include "Pipe.cpp"
+#include "Generator.cpp"
 
 int        init_glob{2};
 int        uninit_glob;
@@ -11,12 +14,24 @@ void ex3();
 
 
 int main() {
-    Alarm a1;
-    std::cout << "a1: " << a1.as_string() << " " << a1.type() << " " << a1 << std::endl;
-    Alarm a2{};
-    std::cout << "a2: " << a2.as_string() << " " << a2.type() << " " << a2 << std::endl;
-    Alarm a3{Alarm::AlarmType::WARNING};
-    std::cout << "a3: " << a3.as_string() << " " << a3.type() << " " << a3 << std::endl;
+    for (int i{0}; i < 3; ++i) {
+        std::cout << "Creating Pipe" << std::endl;
+        Pipe p1{};
+        std::cout << "Creating Display" << std::endl;
+        Display d1{};
+        std::cout << "Creating Generator" << std::endl;
+        Generator g1{};
+        std::cout << "Pipe has data: " << p1.is_empty() << std::endl;
+        std::cout << "Connecting Pipe to Generator" << std::endl;
+        g1.connect(p1);
+        std::cout << "Connecting Display to Generator" << std::endl;
+        d1.connect(p1);
+//        Alarm::AlarmType caution{Alarm::AlarmType::CAUTION};
+        g1.execute();
+        std::cout << "Pipe has data: " << p1.is_empty() << std::endl;
+        d1.execute();
+        std::cout << "------------------------------------" << std::endl;
+    }
 }
 
 void ex3() {
@@ -28,8 +43,8 @@ void ex3() {
     std::cout << "Constant global: " << &const_glob << std::endl;
     std::cout << "Static global: " << &static_glob << std::endl;
     std::cout << "Auto: " << &auto_ << std::endl;
-    std::cout << "Static Auto: " << &static_auto << std::endl;
-    std::cout << "Main: " << &main << std::endl;
+//    std::cout << "Static Auto: " << &static_auto << std::endl;
+//    std::cout << "Main: " << &main << std::endl;
     std::cout << "cast Main: " << reinterpret_cast<int *>(&main) << std::endl;
 }
 
