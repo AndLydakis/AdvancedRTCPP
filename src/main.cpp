@@ -15,7 +15,7 @@ int main() {
     std::cout << "a1: " << a1.as_string() << " " << a1.type() << " " << a1 << std::endl;
     Alarm a2{};
     std::cout << "a2: " << a2.as_string() << " " << a2.type() << " " << a2 << std::endl;
-    Alarm a3{WARNING};
+    Alarm a3{Alarm::AlarmType::WARNING};
     std::cout << "a3: " << a3.as_string() << " " << a3.type() << " " << a3 << std::endl;
 }
 
