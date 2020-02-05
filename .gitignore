@@ -1,5 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 *.swp
+*.swo
+*.releasetime
 ### C++ template
 # Prerequisites
 *.d
