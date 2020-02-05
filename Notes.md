@@ -273,9 +273,10 @@ Data:
 * **Connecting Objetcs**
 	* Need to see header and address of object to communicate with
 
-# Day - 3
+# Day - 3  
 
-### **Specializations**
+### **Specializations**  
+
 	* Subtyping and Derived Typing, same in C++
 	* Specialization through inheritance
 
