@@ -24,6 +24,17 @@ Alarm::AlarmType Alarm::type() const {
     return m_type;
 }
 
+Alarm &Alarm::operator=(const Alarm &alarm_) {
+    if (&alarm_ == this)return *this;
+    std::cout << "Alarm assignment operator" << std::endl;
+    return *this;
+}
+
+Alarm::Alarm(const Alarm &alarm) {
+    std::cout << "Alarm::copy-ctor" << std::endl;
+    m_type = alarm.type();
+}
+
 std::ostream &operator<<(std::ostream &os, Alarm alarm) {
     os << "Alarm: " << alarm.as_string();
     return os;

@@ -6,17 +6,15 @@
 
 void Pipe::push(Alarm &alarm_) {
     std::cout << "Pushing " << alarm_ << std::endl;
-    alarm = std::optional<Alarm>{alarm_};
+    list->add(alarm_);
 }
 
-std::optional<Alarm> Pipe::pull() {
-    if (alarm.has_value()) {
-        return alarm;
-    } else {
-        return std::optional<Alarm>{};
-    }
+Alarm Pipe::pull() {
+    Alarm alarm = *list->end();
+    list->erase(--list->end(), list->end());
+    return alarm;
 }
 
 bool Pipe::is_empty() {
-    return alarm.has_value();
+    return list->size() > 0;
 }

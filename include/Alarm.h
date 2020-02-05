@@ -23,9 +23,15 @@ public:
 
     Alarm(AlarmType);
 
+    Alarm(const Alarm &alarm);
+
     AlarmType type() const;
 
     const char *as_string() const;
+
+    ~Alarm() { std::cout << "Alarm::dtor" << std::endl; }
+
+    Alarm &operator=(const Alarm &alarm_);
 
 private:
     AlarmType m_type;

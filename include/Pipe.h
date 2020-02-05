@@ -5,20 +5,22 @@
 #ifndef ADVANCEDRTCPP_PIPE_H
 #define ADVANCEDRTCPP_PIPE_H
 
-#include "Alarm.h"
+#include "AlarmList.h"
 #include <optional>
 
 class Pipe {
 public:
     Pipe() {
+        list = new AlarmList();
         std::cout << "Pipe Default ctor" << std::endl;
     }
 
-    explicit Pipe(Alarm::AlarmType type_) : alarm(type_) {
+    explicit Pipe(Alarm::AlarmType type_) {
+        list->emplace(type_);
         std::cout << "PipeAlarm Type ctor" << std::endl;
     }
 
-    std::optional<Alarm> pull();
+    Alarm pull();
 
     void push(Alarm &alarm_);
 
@@ -27,8 +29,8 @@ public:
     bool is_empty();
 
 private:
-    std::optional<Alarm> alarm;
-    bool                 has_alarm{false};
+    AlarmList *list;
+    bool      has_alarm{false};
 };
 
 

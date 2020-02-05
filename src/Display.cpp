@@ -9,7 +9,7 @@ void Display::connect(Pipe &pipe_) {
 }
 
 void Display::execute() {
-    std::cout << "Displaying: " << pipe->pull().value() << std::endl;
+    std::cout << "Displaying: " << pipe->pull() << std::endl;
 }
 
 void connect(Display &display_, Pipe &pipe_) {

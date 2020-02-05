@@ -1,3 +1,11 @@
+### [Feabhas Blog](https://blog.feabhas.com/)
+	* [Memory Allocator](https://blog.feabhas.com/2019/03/thanks-for-the-memory-allocator/)
+
+### [CPPCon talks](https://www.youtube.com/user/CppCon)
+	* [dynamic_cast](https://www.youtube.com/watch?v=QzJL-8WbpuU)
+
+### [STL Book 2nd Edition](http://www.josuttis.com/)
+	
 # Day 1 - Core Concepts
 Syntax Semantics / ABI / Idioms - Patterns
 
@@ -41,7 +49,7 @@ Data:
 	* **Declaration**  
 		Look for address in imports table  
 		Global Scope operator 
-		```c++
+		````c++
         int x {1000};
         int main(){
             int x {256};
@@ -60,7 +68,7 @@ Data:
 
 * **User-Defined Types**
 	* **Structures**  
-		```c++
+		````c++
 		struct Example{
 			int i;
 			char c;
@@ -69,7 +77,7 @@ Data:
 		Structure members are public 
 		Structures represent collections of information (they are datatypes)  
 		They support aggregate initializers
-		```c++
+		````c++
 		Example ex1;
 		Example ex2{};
 		Example ex3{200, 'x'};
@@ -134,7 +142,7 @@ Data:
 			Need to copy => call to copy constructor and destructor  
 			Functions that happen in destructor will be triggered when copy goes out of scope
 		* Constructor as conversion functions
-		```c++
+		````c++
 		class Interlock{
 		public:
 			explicit Interlock(bool lockstate): locked{lockstate}{}
@@ -152,7 +160,7 @@ Data:
 		```	 
 		* Implicit conversion might not be desired, use explicit keyword*
 		
-		```c++
+		````c++
 		class USART{
 		public:
 			...
@@ -178,7 +186,7 @@ Data:
 		* ```[[ maybe_unused ]]``` for parameters (interfaces etc.)	
 	
 	* **Automatic Type Deduction**  
-		```c++
+		````c++
 		auto e {1, 2, 3}; // error
 		auto e = {1, 2, 3}; // works through type ellision
 		auto ar[10]; // error, does not work for arrays
@@ -190,7 +198,7 @@ Data:
 
 		Type deduction rules:  
 
-		```c++
+		````c++
 		const int const_val {100};
 		const int& const_ref {const_val};
 		int array[100];
@@ -213,17 +221,17 @@ Data:
 		
 		```decltype(x) b``` gives the type of x, x is not evaluated, does not decay  
 
-		```c++
+		````c++
 		decltype(const_val) d {100}; // d => const int
 		decltype(const_ref) e { d }; // e => const int&
 		```
 		---------------  
-		```c++
+		````c++
 		auto obj_1 = generate();
 		auto obj_2 = obj_1; // obj_1 == obj_2
 		```  
 		vs
-		```c++
+		````c++
 		auto obj_1 { generate() };
 		decltype(obj_1) obj_2 {}; // obj_1 =/= obj_2
 		```  
@@ -235,7 +243,7 @@ Data:
 
 		* Enums:
 			Underlying type:
-			```c++
+			````c++
 			enum class Modde: unsigned long{
 				of, on, standby, error
 			};
@@ -249,7 +257,7 @@ Data:
 
 		* const
 			Once initialized, does not change  
-			```c++
+			````c++
 			int size {10};			// size not const
 			const int sz { size }; 	// non-modifiable, run-time initialized
 			double array[size];		// error
@@ -258,7 +266,7 @@ Data:
 
 		* constexpr  
 			Compile time constants
-			```c++
+			````c++
 			int size {16};
 			const int const_sz {16};
 			
@@ -273,14 +281,13 @@ Data:
 * **Connecting Objetcs**
 	* Need to see header and address of object to communicate with
 
-# Day - 3  
+# Day - 3
 
-### **Specializations**  
-
+### **Specializations**
 	* Subtyping and Derived Typing, same in C++
 	* Specialization through inheritance
 
-	```c++
+	````c++
 	class Sensor{
 	public:
 		Sensor() = default;
@@ -383,3 +390,34 @@ Data:
 	* Base class should be explicitly constructed
 	* Add a virtual destructor if there are virtual functions
 	* Mark overriden functions in derived classes
+
+### Standard Library Containers  
+	* STL: Algorithms/Containers/Iterators + Adaptors/Allocators/Functors
+	* Sequence Containers:
+		* Ordered Collections
+		* Position depends on time and place of insertion
+		* Position independent of other objects  
+
+	```c++
+	#define ARRAY_SIZEOF(arr) *(&arr + 1) - arr  // get the len of the major axis of a c-type array
+	#define ARRAY_ELEMENTS(arr) (sizeof(arr) / sizeof(arr[-1]))
+	```  
+	  
+	* Associative Containers:
+		* Unordered/Ordered Collections
+		* Position depends on object attributes  
+		* Keys need to implement ```<``` operators
+		
+	```c++
+	//works from c++20
+	enum Sayings{hello, world};
+	const char* strings[]{
+		[hello] = "hello",
+		[world] = "world"
+	};
+	std::cout << strings[hello] << std::endl;
+	```
+	
+### Algorithm Model
+	
+	
