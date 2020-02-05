@@ -8,10 +8,13 @@
 #include "Filter.h"
 #include "Display.h"
 #include <vector>
+#include <initializer_list>
 
 class Pipeline {
 public:
     Pipeline() = default;
+
+    Pipeline(std::initializer_list<Filter *> list_) : filters(list_) {};
 
     void add(Filter &);
 
