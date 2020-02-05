@@ -41,7 +41,7 @@ Data:
 	* **Declaration**  
 		Look for address in imports table  
 		Global Scope operator 
-		```c++
+		````c++
         int x {1000};
         int main(){
             int x {256};
@@ -60,7 +60,7 @@ Data:
 
 * **User-Defined Types**
 	* **Structures**  
-		```c++
+		````c++
 		struct Example{
 			int i;
 			char c;
@@ -69,7 +69,7 @@ Data:
 		Structure members are public 
 		Structures represent collections of information (they are datatypes)  
 		They support aggregate initializers
-		```c++
+		````c++
 		Example ex1;
 		Example ex2{};
 		Example ex3{200, 'x'};
@@ -96,7 +96,8 @@ Data:
 			Outer outer4{inner{1 ,2}, 3}; // Copy-initialization of inner
 			Outer outer5{1,2,3}; // brace ellision of inner and outer
 		}
-		```
+		``` 
+  
 	* **Classes**
 		Classes represent behaviours  
 		```c++
@@ -133,7 +134,7 @@ Data:
 			Need to copy => call to copy constructor and destructor  
 			Functions that happen in destructor will be triggered when copy goes out of scope
 		* Constructor as conversion functions
-		```c++
+		````c++
 		class Interlock{
 		public:
 			explicit Interlock(bool lockstate): locked{lockstate}{}
@@ -151,7 +152,7 @@ Data:
 		```	 
 		* Implicit conversion might not be desired, use explicit keyword*
 		
-		```c++
+		````c++
 		class USART{
 		public:
 			...
@@ -177,7 +178,7 @@ Data:
 		* ```[[ maybe_unused ]]``` for parameters (interfaces etc.)	
 	
 	* **Automatic Type Deduction**  
-		```c++
+		````c++
 		auto e {1, 2, 3}; // error
 		auto e = {1, 2, 3}; // works through type ellision
 		auto ar[10]; // error, does not work for arrays
@@ -189,7 +190,7 @@ Data:
 
 		Type deduction rules:  
 
-		```c++
+		````c++
 		const int const_val {100};
 		const int& const_ref {const_val};
 		int array[100];
@@ -212,17 +213,17 @@ Data:
 		
 		```decltype(x) b``` gives the type of x, x is not evaluated, does not decay  
 
-		```c++
+		````c++
 		decltype(const_val) d {100}; // d => const int
 		decltype(const_ref) e { d }; // e => const int&
 		```
 		---------------  
-		```c++
+		````c++
 		auto obj_1 = generate();
 		auto obj_2 = obj_1; // obj_1 == obj_2
 		```  
 		vs
-		```c++
+		````c++
 		auto obj_1 { generate() };
 		decltype(obj_1) obj_2 {}; // obj_1 =/= obj_2
 		```  
@@ -234,7 +235,7 @@ Data:
 
 		* Enums:
 			Underlying type:
-			```c++
+			````c++
 			enum class Modde: unsigned long{
 				of, on, standby, error
 			};
@@ -248,7 +249,7 @@ Data:
 
 		* const
 			Once initialized, does not change  
-			```c++
+			````c++
 			int size {10};			// size not const
 			const int sz { size }; 	// non-modifiable, run-time initialized
 			double array[size];		// error
@@ -257,7 +258,7 @@ Data:
 
 		* constexpr  
 			Compile time constants
-			```c++
+			````c++
 			int size {16};
 			const int const_sz {16};
 			
@@ -271,3 +272,195 @@ Data:
 		```const``` is for function parameters, ```constexpr``` for constants
 * **Connecting Objetcs**
 	* Need to see header and address of object to communicate with
+
+# Day - 3
+
+### **Specializations**
+	* Subtyping and Derived Typing, same in C++
+	* Specialization through inheritance
+
+	````c++
+	class Sensor{
+	public:
+		Sensor() = default;
+		Sensor(int id, bool is_active);
+		double get_value();
+	protected: // provide protected methods for interfacing, and getting/setting
+		void set_active();
+		std::string as_string();
+	private:
+		int ID 	     {0};
+		double value {};
+		bool active  {false};
+	}
+	
+	class RotaryEncoder: public Sensor{ // gives access to Sensor public attributes
+	public:
+		using Sensor::Sensor; // makes all base class consructors visible within encoder scopei
+
+		RotaryEncoder(int id, bool state, double fac, double g):
+			Sensor {id, state};
+			conv_factor {fac};
+			gain{g};
+		{
+			std::cout << "New Rotary Encoder" << <std::endl;
+			std::cout << Sensor::as_string() << std::endl;
+		}
+	private:
+		double conv_factor { 1.0 };
+		double gain		   { 1.0 };
+	}
+
+	RotaryEncoder enc1 {}; // OK
+	RotaryEncoder enc2 {2, false}; //Error without the using directive
+	```
+### SOLID
+* **S**ingle Responsibility: An object should only have one reason to change
+* **O**pen-closed:
+* **L**iskov-Substitution: Must provide same functionality to client, and not demand more
+* **I**
+* **D**
+  
+###	Inheritance
+
+* Using substitutable derived classes  
+ 	[Client]->[Sensor]  ====> [Client]->[RotaryEncoder]
+	* Only a pointer needs to change, can be done at runtime
+
+	* Use inheritance if change needs to be a runtime, and if substitution is necessary
+		* If substitution is not necessary, use **composition**
+		* If change is not needed at runtime, use **templates** for generatlity and performance  
+	
+	* Derivation Rules / Object Slicing:
+		* Base objects can point to derived objects and base objects (can slice objects)
+		* Derived objects cannot point to base objects (cannot extend objects)
+	
+	```c++
+	class Sensor{
+	public:
+		double get_value(){
+			std::cout<<"Base::get_value"<<std::endl;
+			return data;
+		}
+	};
+
+	class RotaryEncoder: public Sensor{
+		double get_value(){
+			std::cout << "RotaryEncoder::get_value" << std::endl;
+			return data;
+		}
+	};
+	
+	void read_sensor(Sensor &ptr){
+		ptr.get_value(); // Dynamic binding bia reference
+	}
+	
+	sensor.get_value(); // Sensor::ge_value
+	encoder.get_value(); // RotaryEncoder::get_value;
+	read_sensor(&sensor); // Sensor::get_value();
+	read_sensor(&encoder) // Sensor::get_value();
+	```
+
+	change function to ```virtual```
+	
+	```c++
+    class Sensor{
+    public:
+        virtual double get_value(){ // is expected to be overriden
+            std::cout<<"Base::get_value"<<std::endl;
+            return data;
+        }
+    };
+
+    class RotaryEncoder: public Sensor{
+        double get_value() override { // overrides base function 
+            std::cout << "RotaryEncoder::get_value" << std::endl;
+            return data;
+        }
+    };
+	```
+	* Base class should be explicitly constructed
+	* Add a virtual destructor if there are virtual functions
+	* Mark overriden functions in derived classes
+
+### Abstract Base Classes  
+	
+	* Concurrent Design:
+		* Units of work - tasks
+		* Possible Scheduling Pattern:  
+			Hand-coded for-loop
+		* Possible Scheduling Pattern:  
+			Prioritization should be separated from subclasses and go to main class with virtual function
+
+		* Independent Scheduling using substitution:  
+			* Base scheduler has vector of base class tasks that can be substituted for derived class objects 
+			[Scheduler] --0..16-> [Task] 
+
+			* Make base abstract, by virtual functions, so it cannot be used
+			```c++
+			virtual Base::run() = 0;
+			``` 
+			Derived classes **must** override pure virtual functions
+
+### Extending Derived Classes
+	* Use ```dynamic_cast``` instead of ```static_cast``` to cast base object to derived object
+	
+### Realising Interfaces
+	* Interfaces provide the specification.  
+	* Depenency Inversion: Higher-level modules should not depend upon low-level modules. Both should depend upon abstractions.
+	
+	* Interfaces not naturally supported in C++, fake it with pure virtual classes:  
+		* No data, only pure virtual methods  .
+		* Implementations in derived classes are protected.
+
+	```c++
+	void reset(MediaPlayer &pl){
+		pl.reset();
+	}
+	MP3 mp3{};
+	mp3.play();		//error;
+	reset(mp3); 	// OK;
+	```  
+	* Overdetailed interfaces => Derived classes must implement functions that they don't use
+		* Interface Segregation => Create More Interfaces, derived classes can inherit multiple interfaces
+		* Crosscasting => cast an interface to another interface
+
+		```c++
+		Inter1* i1 {dynamic_cast<Inter1*>(&derived_class)};
+		if (i1){do stuff} check that the cast made sense
+		```
+
+### Inheritance of Derived Types (Adaptor Pattern)  
+	
+	```c++
+	class Utility{
+	public:
+		void op1() {}
+		void op2() {}
+	protected:
+		void prot_op(){}
+	};
+
+	class ObjectAdaptor{
+	public:
+		void func1() { ut.op1() };
+		void func2() { ut.op3() };
+		void op4() { ut.op4() };
+	private:
+		Utility ut {};
+	}
+	
+	class ClassAdaptor : private Utility{ // can call protected method from Utility
+	public:
+		void func1() { Utility::op1(); }
+		void func2() { Utility::op2(); }
+
+		using Utility::op4;
+	}
+	```  
+
+### Uses of inheritance
+	* Concrete Substitution
+	* Abstract base classes
+	* Interfaces
+	* Adaptors

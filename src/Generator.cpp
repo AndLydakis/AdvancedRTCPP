@@ -14,6 +14,7 @@ void Generator::execute(Alarm::AlarmType &type_) {
 }
 
 void Generator::execute() {
+    std::cout << "Generator::execute" << std::endl;
     Alarm a1{static_cast<Alarm::AlarmType>(rand() % Alarm::AlarmType::last)};
     pipe->push(a1);
 }

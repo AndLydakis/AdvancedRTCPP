@@ -4,7 +4,8 @@
 //#include "Pipe.cpp"
 //#include "Generator.cpp"
 
-#include "Display.h"
+#include "Pipeline.h"
+#include "Filter.h"
 
 int        init_glob{2};
 int        uninit_glob;
@@ -16,6 +17,26 @@ void ex3();
 
 
 int main() {
+
+    Pipeline pipeline_{};
+    for (int i{0}; i < 3; ++i) {
+        std::cout << "Creating Pipe" << std::endl;
+        Pipe p1{};
+        std::cout << "Creating Display" << std::endl;
+        Display d1{};
+        std::cout << "Creating Generator" << std::endl;
+        Generator g1{};
+        std::cout << "Pipe has data: " << p1.is_empty() << std::endl;
+        std::cout << "Connecting Pipe to Generator" << std::endl;
+        connect(g1, p1);
+        std::cout << "Connecting Display to Generator" << std::endl;
+        connect(d1, p1);
+        pipeline_.add(g1);
+        pipeline_.add(d1);
+    }
+    pipeline_.run();
+    return EXIT_SUCCESS;
+
     for (int i{0}; i < 3; ++i) {
         std::cout << "Creating Pipe" << std::endl;
         Pipe p1{};

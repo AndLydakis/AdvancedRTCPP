@@ -6,9 +6,10 @@
 #define ADVANCEDRTCPP_DISPLAY_H
 
 #include "Pipe.h"
+#include "Filter.h"
 #include <optional>
 
-class Display {
+class Display : public Filter {
 public:
     Display() {
         std::cout << "Display Default ctor" << std::endl;
@@ -18,13 +19,13 @@ public:
 
     void connect(Pipe &pipe_);
 
-    void execute();
+    void execute() override;
 
 private:
     Pipe *pipe{nullptr};
 };
 
-class Generator {
+class Generator : public Filter {
 public:
     Generator() {
         std::cout << "Generator default ctor" << std::endl;
@@ -36,7 +37,7 @@ public:
 
     void execute(Alarm::AlarmType &type_);
 
-    void execute();
+    void execute() override;
 
 private:
     Pipe *pipe{nullptr};
