@@ -16,10 +16,11 @@ void Generator::execute(Alarm::AlarmType &type_) {
 
 void Generator::execute() {
     std::cout << "Generator::execute ";
-    for (int i{0}; i < 10; ++i) {
-        Alarm a1{static_cast<Alarm::AlarmType>(random() % Alarm::AlarmType::last), "JHFLKJDAHFLDKJSHFLKDSJH"};
-        pipe->push(a1);
+    AlarmList al{};
+    for (int  i{0}; i < 5; ++i) {
+        al.emplace(static_cast<Alarm::AlarmType>(random() % Alarm::AlarmType::last), "JHFLKJDAHFLDKJSHFLKDSJH");
     }
+    pipe->push(al);
     std::cout << std::endl;
 }
 

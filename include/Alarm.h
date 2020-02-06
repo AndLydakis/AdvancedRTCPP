@@ -21,11 +21,18 @@ public:
 
     Alarm();
 
-    Alarm(AlarmType);
+    explicit Alarm(AlarmType);
+
+//    Alarm(const Alarm &alarm);
+
+    Alarm(const Alarm &alarm, const char *description);
 
     Alarm(const Alarm &alarm);
 
-    Alarm(const Alarm &alarm, const char *description);
+    // move constructor
+    Alarm(Alarm &&alarm) noexcept;
+
+    Alarm(Alarm::AlarmType type_, const char *description_);
 
     AlarmType type() const;
 
@@ -33,15 +40,13 @@ public:
 
     const char *what() const;
 
-    ~Alarm() { std::cout << "Alarm::dtor" << std::endl; }
-
     Alarm &operator=(Alarm alarm_);
 
     friend void swap(Alarm &lhs, Alarm &rhs);
 
 private:
-    char *description{nullptr};
-    AlarmType  m_type;
+    char      *description{nullptr};
+    AlarmType m_type;
 };
 
 std::ostream &operator<<(std::ostream &os, Alarm alarm);

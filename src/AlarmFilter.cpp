@@ -18,15 +18,18 @@ void AlarmFilter::execute() {
     std::cout << std::endl;
     std::vector<Alarm> dest;
 
-//    auto allowed = [this](Alarm alarm) { return alarm.type() == this->filter_value; };
-    auto allowed = [this](Alarm alarm) { return alarm.type() == this->filter_value;; };
+    auto allowed = [this](Alarm alarm) { return true; };
+//    auto allowed = [this](Alarm alarm) { return alarm.type() == this->filter_value;; };
     std::copy_if(alarms.begin(), alarms.end(), std::back_inserter(dest), allowed);
 
+
     std::cout << "Filtered  Alarms:" << std::endl;
-    for (auto &f: dest) std::cout << f.as_string() << " ";
-    std::cout << std::endl;
-    for (Alarm f:dest) {
-        std::cout << "Filter Pushing " << f.as_string() << std::endl;
-        output->push(f);
+    AlarmList l{};
+    for (auto &f: dest) {
+        std::cout << f.as_string() << " ";
+        l.add(f);
     }
+    output->push(l);
+    std::cout << std::endl;
+
 }

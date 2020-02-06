@@ -1,8 +1,10 @@
 ### [Faehbas Blog](faebhas.blog.com)  
 	* [Memory Allocator](https://blog.feabhas.com/2019/03/thanks-for-the-memory-allocator/)  
+	* [std::variant]()
 ### [CPPCon Youtube](https://www.youtube.com/user/CppCon)  
 	* [dynamic_cast](https://www.youtube.com/watch?v=QzJL-8WbpuU/0.jpg)(https://www.youtube.com/watch?v=QzJL-8WbpuU)  
 ### [STL Book](http://www.cppstdlib.com/)  
+### [Crunt Launcher](https://en.wikipedia.org/wiki/Only_Forward)
 
 # Day 1 - Core Concepts
 Syntax Semantics / ABI / Idioms - Patterns
@@ -473,4 +475,67 @@ Data:
 
 	Rule of 3 states that we should account for the assignment operator as well.
     
-    
+### Move Semantics
+	
+	* Copy construction can be expensive
+
+	* l-value refernces
+	```c++
+	
+	```
+	* l-value and r-value references
+	```c++
+	int add(int a, int b) {return a+b;}
+	void func(int& i);
+	void func(const int& i);
+	void func(int&& i);
+	void func(const int&& i);
+	
+	// l-values
+	int i {10};
+	int& r1{i}; // ok, can bind to l-val
+	const int& r2 {17} // OK, can bind to literal
+	int&a {add(10, 20)}; //error cannot bind l-value refernce to return object
+
+	const int& b {add(10, 20)}; // OK
+	
+	func(r1); // calls func(int& i);
+	func(add(10, 20)); // calls func(const int& i);
+
+	//-------------------------------------------
+	
+	// r-values
+	func(add(10, 10)); //calls #3 with modifiable r value
+	func(17); //same
+	int&& rval{add(10, 20)}; // rval is reference-to-r-value
+	func(rval); //calls func(int& i); rval is an l-value
+	```
+
+	* A move constructor supports resource pilfering
+	```c++
+	SocketManager make_socket_manager(IP_address ip, Port, p){
+		SocketManager tmp {ip, p};
+		return temp;
+	}
+	```
+	can be re-written as:
+	```c+
+	SocketManager SocketManager(SocketManager &&src) noexcept:SocketManager{}{
+		swap(*this, src);
+	}
+	```
+
+	* Move Assignment
+		* ```std::move```: transfer ownership of resources from one object to another, converts l-value to r-value,forcing compiler to choose r-value overload
+		* free move assignmet when using copy-swap idiom (assignment by value), no need to re-write assignment operator
+		* if copyable, object should be moveable, other way around does not apply
+		* Policies:
+			* Don't write any special constructors and destructors
+			* If you write destructors, specify copy-ctor, move-ctor, assignment operator as default to reenable default behaviours
+			* For own resource management, specify non default for all of the above and add ```friend void swap(ADT& a, ADT& b)```
+			* Move only semantics: delete assignment operator and copy-ctor, implement the rest, use exchange instead of swap
+### Smart Pointers
+
+	* Rule of 0: Never do your own resource management, use smart pointers
+		
+		

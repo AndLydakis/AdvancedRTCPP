@@ -6,6 +6,7 @@
 #define ADVANCEDRTCPP_DISPLAY_H
 
 #include "Pipe.h"
+#include "AlarmList.h"
 #include "Filter.h"
 #include <optional>
 

@@ -15,8 +15,17 @@ Alarm::Alarm(Alarm::AlarmType type_) : m_type(type_) {
     std::cout << "Enum constructor" << std::endl;
 }
 
+Alarm::Alarm(Alarm::AlarmType type_, const char *description_) : m_type(type_) {
+    std::cout << "Enum constructor" << std::endl;
+    if (description_) {
+        std::cout << "Allocating space" << std::endl;
+        description = new char[(strlen(description_) + 1)];
+        strcpy(description, description_);
+    }
+}
+
 Alarm::Alarm(const Alarm &alarm, const char *description_) {
-    std::cout << "Alarm::copy-ctor with description" << std::endl;
+    std::cout << "Alarm::ctor with description" << std::endl;
     m_type = alarm.type();
     std::cout << "Type: " << m_type << std::endl;
     std::cout << "Description: " << std::endl;
@@ -37,11 +46,9 @@ Alarm::Alarm(const Alarm &alarm) {
         description = new char[(strlen(alarm.description) + 1)];
         strcpy(description, alarm.description);
     }
-    std::cout << "**" << what() << std::endl;
 }
 
 const char *Alarm::as_string() const {
-
     const char *strings[] = {"WARNING", "CAUTION", "ADVISORY", "DEFAULT"};
     return strings[m_type];
 }
@@ -64,6 +71,11 @@ void swap(Alarm &lhs, Alarm &rhs) { // Swap each attribute in order
 
 const char *Alarm::what() const {
     return description;
+}
+
+Alarm::Alarm(Alarm &&alarm) noexcept : Alarm{} {
+    std::cout << "Alarm::move" << std::endl;
+    swap(*this, alarm);
 }
 
 std::ostream &operator<<(std::ostream &os, Alarm alarm) {

@@ -8,8 +8,14 @@ void AlarmList::add(Alarm &in_val) {
     alarm_list.push_back(in_val);
 }
 
-void AlarmList::emplace(Alarm::AlarmType type) {
-    alarm_list.emplace_back(type);
+void AlarmList::emplace(Alarm::AlarmType type_) {
+    std::cout << "Emplace: " << type_ << std::endl;
+    alarm_list.emplace_back(type_);
+}
+
+void AlarmList::emplace(Alarm::AlarmType type, const char *desc) {
+    std::cout << "Emplace with description: " << type << std::endl;
+    alarm_list.emplace_back(type, desc);
 }
 
 std::size_t AlarmList::size() const {
@@ -31,9 +37,5 @@ void AlarmList::reserve(const std::size_t sz) {
 void AlarmList::erase(const Iterator &from, const Iterator &to) {
     std::cout << "AlarmList::erase" << std::endl;
     alarm_list.erase(from, to);
-}
-
-void AlarmList::emplace(Alarm::AlarmType type, const char *desc) {
-    alarm_list.emplace_back(type, desc);
 }
 

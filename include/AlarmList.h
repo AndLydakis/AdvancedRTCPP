@@ -22,7 +22,7 @@ public:
 
     void erase(const Iterator &from, const Iterator &to);
 
-    void reserve(const size_t sz);
+    void reserve(size_t sz);
 
     size_type size() const;
 
