@@ -13,7 +13,7 @@ void Display::execute() {
     while (!pipe->is_empty()) {
         std::cout << "Running Display " << pipe->is_empty() << std::endl;
         auto alarm = pipe->pull();
-        std::cout << "Displaying: " << alarm << ":" << alarm.what() << std::endl;
+        std::cout << "Displaying: " << alarm.as_string() << ":" << alarm.what() << std::endl;
     }
 }
 
