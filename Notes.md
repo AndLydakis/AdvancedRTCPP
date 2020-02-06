@@ -1,11 +1,9 @@
-### [Feabhas Blog](https://blog.feabhas.com/)
-	* [Memory Allocator](https://blog.feabhas.com/2019/03/thanks-for-the-memory-allocator/)
+### [Faehbas Blog](faebhas.blog.com)  
+	* [Memory Allocator](https://blog.feabhas.com/2019/03/thanks-for-the-memory-allocator/)  
+### [CPPCon Youtube](https://www.youtube.com/user/CppCon)  
+	* [dynamic_cast](https://www.youtube.com/watch?v=QzJL-8WbpuU/0.jpg)(https://www.youtube.com/watch?v=QzJL-8WbpuU)  
+### [STL Book](http://www.cppstdlib.com/)  
 
-### [CPPCon talks](https://www.youtube.com/user/CppCon)
-	* [dynamic_cast](https://www.youtube.com/watch?v=QzJL-8WbpuU)
-
-### [STL Book 2nd Edition](http://www.josuttis.com/)
-	
 # Day 1 - Core Concepts
 Syntax Semantics / ABI / Idioms - Patterns
 
@@ -391,33 +389,88 @@ Data:
 	* Add a virtual destructor if there are virtual functions
 	* Mark overriden functions in derived classes
 
-### Standard Library Containers  
-	* STL: Algorithms/Containers/Iterators + Adaptors/Allocators/Functors
-	* Sequence Containers:
-		* Ordered Collections
-		* Position depends on time and place of insertion
-		* Position independent of other objects  
+# Day 3
+* Function Objects:
+	* Any objects that implement the ```()``` operator.
+
+* Lambda Expressions:
+	```c++
+	auto local_func = [] (int a)-> int{return a-1};
+	```
+	* ```local_func```: closure, type must be ```auto```
+	* ```[]```: capture list, local variables in the list are captured (default by value, copied, capture by reference to manipulate)
+	* ```(int a)```: parameter list, optional if empty
+	* ```int```: return type, optional if void
+	* ```{ ... }```: regular function  
+
+	* [&] => capture everything by reference, [*] capture everythin by value
+
+	* [&x=x1, &y=y1] => rename captured variables
 
 	```c++
-	#define ARRAY_SIZEOF(arr) *(&arr + 1) - arr  // get the len of the major axis of a c-type array
-	#define ARRAY_ELEMENTS(arr) (sizeof(arr) / sizeof(arr[-1]))
-	```  
-	  
-	* Associative Containers:
-		* Unordered/Ordered Collections
-		* Position depends on object attributes  
-		* Keys need to implement ```<``` operators
-		
-	```c++
-	//works from c++20
-	enum Sayings{hello, world};
-	const char* strings[]{
-		[hello] = "hello",
-		[world] = "world"
-	};
-	std::cout << strings[hello] << std::endl;
+	int total { 0 };
+	/**
+	i is now a static object to the closure object
+	**/
+	auto fn [&output = total, i=10](int new_val) mutable{
+		output += new_val;
+		++i;
+		std::cout << i << " " << total <<  std::endl;
+	}
+	fn(10); // outputs 11 10
+	fn(20); // outputs 12 30
+	fn(30); // outputs 13 60
 	```
+	Used in algorithm place for containers.
+
+	Under the hood, a closure class is generated, ```const``` by default, must be specified as ```mutable``` to change state  .
+	Can be specified as ```constexpr``` to be evaluated at compile time.  
+	  
+	Capturing takes place just before the function call.  
+	  
+	Can access member class variables, relative to a this pointer, have to capture ```[this]```.
+
+* ```std::function```
+	* ```std::function<ReturnType(ParameterList)```: generalised pointer to function that can reference any callbale object.
+	* Use for callbacks
+
+### Resource Management  
+	* Copy-Swap Idiom:
+		* Deep Copy Semantics
+		* Requires Copy Constructor that should copy what the pointer is pointing at, not the pointer itself
+
+	```c++
+	class SocketManager{
+	SocketManager& operator=(SocketManager rhs); // rhs is no longer a const reference, it is passed by value in the copy swap idiom
+	~SocketManager(){/**delete resources**/}
+	private:
+		IP_address ip {0x7F00001};
+		Socket* socket{nullptr};
+		
+		friend void swap(SocketManager& lhs, SocketManager& rhs);
+	};
+	SocketManager::SocketManager(const SocketManager & src):ip{src.ip}, socket{nullptr}{
+		if (src.socket) {
+			socket = newSocket { *src.socket };
+			socket->open();
+		}
+	}
 	
-### Algorithm Model
+	// We don't want to replicate deep-copy code from cctor if possible
+	SocketManager& SocketManager::operator=(SocketManager rhs){
+		// copy-swap idiom. implments deep copy
+		swap(*this, rhs);
+		return *this;
+	}
 	
-	
+	// is exception safe
+	void swap(SocketManger& lhs, SocketManager& rhs){ // Swap each attribute in order
+		using std::swap;
+		swap(lhs.ip, rhs.ip);
+		swap(lhs.socket, rhs.socket);
+	}
+	```
+
+	Rule of 3 states that we should account for the assignment operator as well.
+    
+    

@@ -9,9 +9,10 @@
 #include <optional>
 
 class Pipe {
+    using container_type = AlarmList;
 public:
     Pipe() {
-        list = new AlarmList();
+        list = new container_type();
         std::cout << "Pipe Default ctor" << std::endl;
     }
 
@@ -28,9 +29,14 @@ public:
 
     bool is_empty();
 
+    container_type get_alarms();
+protected:
+
 private:
-    AlarmList *list;
-    bool      has_alarm{false};
+
+
+    container_type *list;
+    bool           has_alarm{false};
 };
 
 

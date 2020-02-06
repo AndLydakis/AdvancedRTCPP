@@ -9,7 +9,12 @@ void Display::connect(Pipe &pipe_) {
 }
 
 void Display::execute() {
-    std::cout << "Displaying: " << pipe->pull() << std::endl;
+    std::cout << "Running Display " << pipe->is_empty() << std::endl;
+    while (!pipe->is_empty()) {
+        std::cout << "Running Display " << pipe->is_empty() << std::endl;
+        auto alarm = pipe->pull();
+        std::cout << "Displaying: " << alarm << ":" << alarm.what() << std::endl;
+    }
 }
 
 void connect(Display &display_, Pipe &pipe_) {

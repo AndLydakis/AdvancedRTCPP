@@ -21,7 +21,7 @@ AlarmList::Iterator AlarmList::begin() {
 }
 
 AlarmList::Iterator AlarmList::end() {
-    return alarm_list.end();
+    return --alarm_list.end();
 }
 
 void AlarmList::reserve(const std::size_t sz) {
@@ -32,3 +32,8 @@ void AlarmList::erase(const Iterator &from, const Iterator &to) {
     std::cout << "AlarmList::erase" << std::endl;
     alarm_list.erase(from, to);
 }
+
+void AlarmList::emplace(Alarm::AlarmType type, const char *desc) {
+    alarm_list.emplace_back(type, desc);
+}
+

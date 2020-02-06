@@ -25,16 +25,23 @@ public:
 
     Alarm(const Alarm &alarm);
 
+    Alarm(const Alarm &alarm, const char *description);
+
     AlarmType type() const;
 
     const char *as_string() const;
 
+    const char *what() const;
+
     ~Alarm() { std::cout << "Alarm::dtor" << std::endl; }
 
-    Alarm &operator=(const Alarm &alarm_);
+    Alarm &operator=(Alarm alarm_);
+
+    friend void swap(Alarm &lhs, Alarm &rhs);
 
 private:
-    AlarmType m_type;
+    char *description{nullptr};
+    AlarmType  m_type;
 };
 
 std::ostream &operator<<(std::ostream &os, Alarm alarm);

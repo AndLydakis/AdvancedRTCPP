@@ -18,6 +18,7 @@ public:
     void add(Alarm &in_val);
 
     void emplace(Alarm::AlarmType type);
+    void emplace(Alarm::AlarmType type, const char* description);
 
     void erase(const Iterator &from, const Iterator &to);
 
